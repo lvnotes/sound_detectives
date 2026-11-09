@@ -4,72 +4,103 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Звукові детективи</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;600;700&family=Unbounded:wght@600;700;800&display=swap&subset=cyrillic" rel="stylesheet">
 <style>
-:root{--ink:#1d2b4f;--bg:#eef4ff;--acc:#c2185b;--ok:#2e9e5b;--okb:#d9f4e3;--bad:#e5484d;--badb:#fde3e3;--sel:#ffc83d;--line:#b9c7e6}
+:root{--ink:#161a45;--blue:#3342d6;--tint:#eef1ff;--line:#c9d0f2;--tape:#ffc82e;--hl:#ffe58a;--mut:#565d8c;--ok:#1f9d55;--okb:#ddf5e6;--okd:#0f6b38;--bad:#e5484d;--badb:#fde2e2;--badd:#a3262b;--t:clamp(38px,11vw,54px);--bx:min(42px,calc((100vw - 76px)/9));--disp:Unbounded,"Trebuchet MS",system-ui,sans-serif}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Trebuchet MS","Segoe UI",Arial,sans-serif;line-height:1.45}
-main{max-width:720px;margin:0 auto;padding:16px}
-.card{background:#fff;border-radius:18px;padding:20px;box-shadow:0 2px 0 var(--line)}
-h1{color:var(--acc);font-size:2rem;margin:.2em 0}
-h2{margin:.3em 0 .1em;font-size:1.4rem}
-.hint{margin:.2em 0 .8em;color:#4a5a80}
-.top{display:flex;justify-content:space-between;font-weight:700;color:#4a5a80}
-.dots{display:flex;gap:8px;margin:.5em 0 1em}
-.dots i{width:16px;height:16px;border-radius:50%;background:#dde5f6;border:2px solid var(--line)}
+[hidden]{display:none!important}
+body{margin:0;min-height:100vh;background:var(--blue);background-image:linear-gradient(rgba(255,255,255,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.09) 1px,transparent 1px);background-size:26px 26px;color:var(--ink);font-family:"Golos Text","Trebuchet MS",system-ui,sans-serif;font-size:1.05rem;line-height:1.5}
+main{max-width:640px;margin:0 auto;padding:14px 12px 48px}
+.bar{display:flex;justify-content:space-between;align-items:center;color:#fff;min-height:40px}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--disp);font-weight:700;font-size:.8rem}
+.pill{display:flex;align-items:center;gap:6px;background:var(--tape);color:var(--ink);font-weight:700;padding:5px 14px;border-radius:20px}
+.card{position:relative;margin-top:40px;background:#fff;border-radius:6px 20px 20px 20px;padding:22px 18px 22px;box-shadow:0 6px 0 rgba(10,15,80,.35)}
+.tab{position:absolute;left:0;top:-33px;height:34px;padding:6px 18px 0;background:#fff;border-radius:12px 12px 0 0;font-weight:700;font-size:.9rem;color:var(--mut)}
+h1{font-family:var(--disp);font-weight:800;font-size:clamp(1.5rem,6.6vw,2.1rem);line-height:1.15;margin:.1em 0 .4em}
+h2{font-family:var(--disp);font-weight:700;font-size:1.2rem;line-height:1.25;margin:0 0 .3em}
+.hint{margin:0;color:var(--mut)}
+.lead{font-size:1.1rem;margin:.2em 0 1em}
+.dots{display:flex;gap:6px;margin:14px 0 6px}
+.dots i{width:28px;height:28px;border-radius:8px;background:var(--tint);border:2px solid var(--line);display:grid;place-items:center;font-style:normal;font-weight:800;font-size:.85rem;color:#fff}
 .dots i.cur{border-color:var(--ink);background:#fff}
-.dots i.ok{background:var(--ok);border-color:var(--ok)}
-.dots i.bad{background:var(--bad);border-color:var(--bad)}
-.word{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0}
-.t{font-weight:700;font-size:2rem;font-family:inherit;min-width:2.3em;height:2.5em;border-radius:12px;border:2px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;padding:0 6px}
-.t.sel{border-color:var(--sel);background:#fff6d6;box-shadow:0 0 0 3px var(--sel)}
-.t.tg{border-color:var(--sel);background:#fff6d6;box-shadow:0 0 0 3px var(--sel);cursor:default}
-.t.ok,.o.ok{background:var(--okb);border-color:var(--ok);color:#14663a}
-.t.bad,.o.bad{background:var(--badb);border-color:var(--bad);color:#a3262b}
-.t.miss{border:2px dashed var(--ok);background:var(--okb)}
-.q{font-weight:700;margin:14px 0 6px}
+.dots i.ok{background:var(--ok);border-color:var(--ok)}.dots i.ok::before{content:"✓"}
+.dots i.bad{background:var(--bad);border-color:var(--bad)}.dots i.bad::before{content:"✕"}
+.word,.sch{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:12px 0;padding:16px 8px 10px;background:var(--tint);border-radius:16px}
+.word{padding-bottom:16px}
+.t{font-family:var(--disp);font-weight:600;font-size:calc(var(--t)*.5);min-width:var(--t);height:calc(var(--t)*1.2);border-radius:10px;border:2px solid var(--ink);border-bottom-width:5px;background:#fff;color:var(--ink);cursor:pointer;padding:0 6px;transition:transform .08s}
+.t:active:not(:disabled){transform:translateY(2px)}
+.t.sel,.t.tg{background:var(--hl)}
+.t:disabled{opacity:1;cursor:default}
+.t.ok,.o.ok,.bx.ok{background:var(--okb);border-color:var(--ok);color:var(--okd)}
+.t.bad,.o.bad,.bx.bad{background:var(--badb);border-color:var(--bad);color:var(--badd);animation:shake .35s}
+.t.miss{background:#fff;border-style:dashed;border-color:var(--ok);color:var(--okd)}
+.q{font-weight:700;margin:18px 0 8px}
 .opts{display:flex;flex-wrap:wrap;gap:8px}
-.o{font-weight:700;font-size:1.2rem;font-family:inherit;min-width:3em;padding:10px 16px;border-radius:12px;border:2px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
-.o:disabled,.t:disabled{cursor:default}
-.go{display:block;width:100%;margin-top:16px;padding:14px;font-weight:700;font-size:1.15rem;font-family:inherit;color:#fff;background:var(--acc);border:0;border-radius:14px;cursor:pointer}
-.t:focus-visible,.o:focus-visible,.go:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
-.fb{margin-top:14px;padding:12px 14px;border-radius:12px;background:#f3f6fd}
-.fb.ok{background:var(--okb)}.fb.bad{background:var(--badb)}
+.o{font-family:var(--disp);font-weight:600;font-size:1rem;min-width:52px;min-height:50px;padding:6px 18px;border-radius:12px;border:2px solid var(--ink);border-bottom-width:5px;background:#fff;color:var(--ink);cursor:pointer}
+.o:active:not(:disabled){transform:translateY(2px)}
+.o:disabled{opacity:1;cursor:default}
+.o.ok{animation:pop .3s}
+.go{display:block;width:100%;margin-top:18px;min-height:54px;font-family:var(--disp);font-weight:700;font-size:1rem;color:var(--ink);background:var(--tape);border:2px solid var(--ink);border-bottom-width:5px;border-radius:14px;cursor:pointer}
+.go:active{transform:translateY(2px)}
+.nx{position:sticky;bottom:12px;z-index:2;box-shadow:0 0 0 8px #fff}
+button:focus-visible,select:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.fb{display:flex;gap:10px;margin-top:18px;padding:14px;border-radius:14px;border-left:6px solid var(--line);background:var(--tint)}
+.fb.ok{background:var(--okb);border-color:var(--ok)}
+.fb.bad{background:var(--badb);border-color:var(--bad)}
+.ic{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:.9rem}
+.fb.ok .ic{background:var(--ok)}.fb.bad .ic{background:var(--bad)}
 .scheme{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
-.cv,.cc{padding:4px 10px;font-weight:700}
+.cv,.cc{padding:3px 10px;font-weight:700}
 .cv{background:var(--ink);color:#fff;border-radius:20px}
 .cc{background:#fff;border:2px solid var(--ink);border-radius:6px}
-.bar{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--bad)}
-.bar b{background:var(--ok)}
-.lv{margin:12px 0}
-.lv div:first-child{display:flex;justify-content:space-between}
-.big{font-size:3rem;font-weight:700;text-align:center;margin:0}
-.stars{text-align:center;font-size:2.2rem;color:var(--sel);letter-spacing:6px}
-.rank{text-align:center;font-weight:700;color:var(--acc);font-size:1.3rem}
-ul.l{padding-left:20px}
-.leg{text-align:center;color:#4a5a80;margin:4px 0}
-.sch{display:flex;flex-wrap:wrap;justify-content:center;margin:14px 0 4px}
-.un{display:flex;flex-direction:column;align-items:center;margin:0 3px 10px}
-.bxs{display:flex;gap:2px;min-height:64px}
+.leg{text-align:center;color:var(--mut);margin:10px 0 0;font-size:.95rem}
+.leg b{color:var(--ink)}
+.un{display:flex;flex-direction:column;align-items:center;margin:0 calc(var(--bx)*.06) 8px}
+.bxs{display:flex;gap:3px;min-height:calc(var(--bx)*1.5)}
 .bc{display:flex;flex-direction:column;align-items:center}
-.bx{width:38px;height:38px;border:2px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font-size:1.3rem;font-family:inherit;padding:0;cursor:pointer}
-.bx.sel{border-color:var(--sel);background:#fff6d6}
-.bx.ok{background:var(--okb);border-color:var(--ok);color:#14663a}
-.bx.bad{background:var(--badb);border-color:var(--bad);color:#a3262b}
-select.bx{-webkit-appearance:none;appearance:none;text-align:center;text-align-last:center;width:42px;height:42px}
+.bx{width:var(--bx);height:var(--bx);border:2px solid var(--ink);border-radius:8px;background:#fff;color:var(--ink);font-size:calc(var(--bx)*.5);font-family:inherit;padding:0;cursor:pointer;text-align:center}
+select.bx{-webkit-appearance:none;appearance:none;text-align-last:center}
 .bx:disabled{opacity:1;cursor:default;-webkit-text-fill-color:currentColor}
-.stb{border:0;background:none;font-size:1.2rem;line-height:1;height:22px;width:42px;opacity:.3;cursor:pointer;color:var(--ink);font-family:inherit}
-.stb.on{opacity:1;color:var(--acc);font-weight:700}
-.stb.ok{opacity:1;color:var(--ok);font-weight:700}
-.stb.bad{opacity:1;color:var(--bad);font-weight:700}
+.stb{display:block;width:calc(var(--bx)*.62);height:calc(var(--bx)*.62);margin:0 auto 4px;border-radius:50%;border:1.5px dashed #8d95c9;background:none;color:var(--mut);font-size:1rem;line-height:1;padding:0;cursor:pointer}
+.stb.on{border:2px solid var(--ink);background:var(--ink);color:#fff}
+.stb.ok{border:2px solid var(--ok);background:var(--ok);color:#fff}
+.stb.bad{border:2px solid var(--bad);background:var(--bad);color:#fff}
 .stb:disabled{cursor:default}
-.ltr{font-weight:700;font-size:1.5rem;margin-top:4px;border-top:3px solid var(--ink);padding:0 6px;min-width:20px;text-align:center}
-.s5{display:flex;flex-direction:column;align-items:center;height:auto;min-width:4.2em;padding:8px 10px;font-size:1.5rem}
-.s5 small{font-size:.75rem;font-weight:400}
+.ltr{font-family:var(--disp);font-weight:600;font-size:calc(var(--bx)*.58);border-top:3px solid var(--ink);min-width:calc(var(--bx)*.7);text-align:center;margin-top:3px;padding:2px 4px 0}
+.tape{height:14px;border-radius:7px;background:repeating-linear-gradient(-45deg,var(--tape) 0 14px,var(--ink) 14px 28px);margin:0 0 18px}
+.cases{list-style:none;counter-reset:c;padding:0;margin:0 0 6px;display:grid;gap:8px}
+.cases li{counter-increment:c;display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--tint);border-radius:12px;font-weight:600}
+.cases li::before{content:counter(c);flex:none;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-family:var(--disp);font-size:.85rem}
+.rule{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0}
+.chip{padding:4px 12px;border-radius:20px;font-weight:600;font-size:.9rem}
+.chip.ok{background:var(--okb);color:var(--okd)}.chip.bad{background:var(--badb);color:var(--badd)}
+.badge{display:flex;gap:14px;align-items:center;background:var(--ink);color:#fff;border-radius:16px;padding:14px 16px;margin:0 0 14px}
+.badge small{opacity:.75;display:block}
+.badge .rank{font-family:var(--disp);font-weight:700;font-size:1.05rem;color:var(--tape);line-height:1.3}
+.score{display:flex;align-items:baseline;justify-content:center;gap:8px}
+.score b{font-family:var(--disp);font-weight:800;font-size:3.4rem;line-height:1.1}
+.stars{display:flex;justify-content:center;gap:6px;margin:4px 0 14px}
+.stars svg{width:48px;height:48px;fill:#e1e5f7;animation:pop .5s both}
+.stars svg.on{fill:var(--tape);stroke:var(--ink);stroke-width:1.2;stroke-linejoin:round}
+.stars svg:nth-child(2){animation-delay:.25s}.stars svg:nth-child(3){animation-delay:.5s}
+.lv{margin:12px 0}
+.lv div:first-child{display:flex;justify-content:space-between;gap:10px;margin-bottom:4px}
+.bar2{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--bad)}
+.bar2 b{background:var(--ok)}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<main><div class="card" id="app"></div></main>
+<main>
+<header class="bar"><div class="brand"><svg width="34" height="34" viewBox="0 0 64 64" aria-hidden="true"><circle cx="26" cy="26" r="17" fill="#fff" stroke="#161a45" stroke-width="5"/><path d="M39 39 56 56" stroke="#ffc82e" stroke-width="9" stroke-linecap="round"/><path d="M18 26h16M26 18v16" stroke="#3342d6" stroke-width="4" stroke-linecap="round"/></svg>Звукові детективи</div><div class="pill" id="scw" hidden>Бали: <span id="sc">0</span></div></header>
+<div class="card" id="app"></div>
+</main>
 <script>
+
 const VS="аоуеиі", N=[5,5,6,6,6,5];
 const app=document.getElementById('app');
 const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
@@ -91,36 +122,38 @@ function draw(p,mode){let gi=0;return p.u.map(x=>`<div class="un"><div class="bx
 const TWO={"я":"[йа]","ю":"[йу]","є":"[йе]","ї":"[йі]","щ":"[шч]"};
 
 const L=[
- {n:"Хитрі букви і знаки",t:"Познач букви, які позначають два звуки, а також м’який знак і апостроф — вони не позначають жодного звука. Потім натисни «Перевірити».",pool:W1,k:1},
+ {n:"Хитрі букви і знаки",t:"Познач усі букви та знаки, які позначають не один звук: або два звуки, або жодного. Потім натисни «Перевірити».",pool:W1,k:1},
  {n:"Рахуємо звуки і склади",t:"Букв і звуків у слові може бути різна кількість. Скільки звуків? Скільки складів?",pool:W2,k:2},
  {n:"Твердий чи м’який?",t:"Яким є приголосний звук, який позначає виділена буква?",pool:W3,k:3},
  {n:"Дзвінкий чи глухий?",t:"Дзвінкий звук вимовляємо з голосом, глухий — майже пошепки.",pool:W4,k:4},
- {n:"Побудуй схему",t:"Склади звуко-буквену схему слова: торкайся клітинок, щоб змінити знак. Познач наголос (′) і натисни «Перевірити».",pool:W5,k:5},
+ {n:"Побудуй схему",t:"Склади звуко-буквену схему слова: у кожній клітинці обери знак зі списку. Познач наголос і натисни «Перевірити».",pool:W5,k:5},
  {n:"Знайди слово за схемою",t:"Розглянь схему й вибери слово, яке їй відповідає.",pool:W5,k:6}
 ];
 let st,cur;
 
 function start(){
  st={l:0,i:0,score:0,max:0,res:L.map(()=>({p:0,m:0})),marks:L.map(()=>[]),wrong:[],items:L.map((l,x)=>shuffle(l.pool).slice(0,N[x]))};
+ document.getElementById('scw').hidden=false;document.getElementById('sc').textContent=0;
  show();
 }
 function intro(){
- app.innerHTML=`<svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true"><circle cx="26" cy="26" r="17" fill="#fff" stroke="#1d2b4f" stroke-width="5"/><path d="M39 39 56 56" stroke="#c2185b" stroke-width="8" stroke-linecap="round"/><path d="M18 26h16M26 18v16" stroke="#ffc83d" stroke-width="4" stroke-linecap="round"/></svg>
+ document.getElementById('scw').hidden=true;
+ app.innerHTML=`<div class="tape"></div>
  <h1>Звукові детективи</h1>
- <p>Слова мають таємниці: літери й звуки — не одне й те саме! Розслідуй слова за 6 рівнів і впіймай усі звуки.</p>
- <ul class="l"><li>Рівень 1. Хитрі букви і знаки: я, ю, є, ї, щ, ь, апостроф</li><li>Рівень 2. Скільки звуків і складів</li><li>Рівень 3. Тверді й м’які приголосні</li><li>Рівень 4. Дзвінкі й глухі приголосні</li><li>Рівень 5. Будуємо звуко-буквену схему слова</li><li>Рівень 6. Знаходимо слово за схемою</li></ul>
- <p>Правильні відповіді стають зеленими, помилки — червоними. Слова щоразу нові.</p>
+ <p class="lead">У слові «Єва» три літери, а звуків чотири. Розслідуй слова, знайди всі звуки й будь-яку хитру літеру.</p>
+ <div class="sch" aria-hidden="true">${draw(P("є:=o! в:- а:o"),2)}</div>
+ <ol class="cases">${L.map(l=>`<li>${l.n}</li>`).join("")}</ol>
+ <div class="rule"><span class="chip ok">Зелений — правильно</span><span class="chip bad">Червоний — помилка</span></div>
  <button class="go" id="st">Почати розслідування</button>`;
  document.getElementById('st').onclick=start;
 }
 function head(){
  const l=L[st.l];
- return `<div class="top"><span>Рівень ${st.l+1} з ${L.length}</span><span id="sc">Бали: ${st.score}</span></div>
- <h2>${l.n}</h2><p class="hint">${l.t}</p><div class="dots" id="dots"></div>`;
+ return `<div class="tab">Рівень ${st.l+1} з ${L.length}</div><h2>${l.n}</h2><p class="hint">${l.t}</p><div class="dots" id="dots"></div>`;
 }
 function dots(){
  document.getElementById('dots').innerHTML=st.items[st.l].map((_,k)=>`<i class="${st.marks[st.l][k]||(k==st.i?'cur':'')}"></i>`).join('');
- document.getElementById('sc').textContent="Бали: "+st.score;
+ document.getElementById('sc').textContent=st.score;
 }
 function tiles(w,tg){
  const T=tg===undefined?null:[].concat(tg);
@@ -131,20 +164,22 @@ function finish(p,m,word,msg){
  st.score+=p;st.max+=m;st.res[st.l].p+=p;st.res[st.l].m+=m;
  st.marks[st.l][st.i]=p==m?'ok':'bad';
  if(p<m&&!st.wrong.includes(word))st.wrong.push(word);
- const last=st.i==N[st.l]-1, lastL=st.l==L.length-1;
+ const last=st.i==N[st.l]-1, lastL=st.l==L.length-1, good=p==m;
  const fb=document.getElementById('fb');
- fb.className="fb "+(p==m?'ok':'bad');
- fb.innerHTML=`<b>${p==m?'Вірно! ':p>0?'Майже! ':'Не зовсім. '}</b>${msg}`;
+ fb.className="fb "+(good?'ok':'bad');
+ fb.innerHTML=`<span class="ic">${good?'✓':p>0?'!':'✕'}</span><div><b>${good?'Вірно! ':p>0?'Майже! ':'Не зовсім. '}</b>${msg}</div>`;
  dots();
  const b=document.getElementById('nx');
  b.hidden=false;
  b.textContent=last?(lastL?'Показати підсумок':'До наступного рівня'):'Далі';
  b.onclick=()=>{st.i++;if(st.i>=N[st.l]){st.l++;st.i=0}st.l>=L.length?final():show()};
+ fb.scrollIntoView({block:'nearest',behavior:'smooth'});
 }
 function scoreErr(err){return err==0?2:err==1?1:0}
 
 function show(){
  const l=L[st.l], it=st.items[st.l][st.i];
+ window.scrollTo(0,0);
  cur={sel:new Set(),a:[],done:false};
  if(l.k==6){
   const key=x=>{const q=P(x[1]);return q.u.map(y=>y.sy.join("")).join("")+"|"+q.stress};
@@ -158,7 +193,7 @@ function show(){
   h+=tiles(it[0])+`<div class="q">Скільки звуків у слові?</div><div class="opts" id="g0">${[1,2,3,4,5,6,7,8,9].map(n=>`<button class="o" data-v="${n}">${n}</button>`).join('')}</div>
   <div class="q">Скільки складів?</div><div class="opts" id="g1">${[1,2,3,4].map(n=>`<button class="o" data-v="${n}">${n}</button>`).join('')}</div>`;
  }else if(l.k==5){
-  h+=`<p class="leg">● голосний &nbsp; — твердий &nbsp; = м’який</p><div class="sch" id="sch">${draw(P(it[1]),0)}</div><button class="go" id="chk">Перевірити</button>`;
+  h+=`<p class="leg"><b>●</b> голосний &nbsp; <b>—</b> твердий &nbsp; <b>=</b> м’який<br>Наголос: торкнись кружечка над голосним.</p><div class="sch" id="sch">${draw(P(it[1]),0)}</div><button class="go" id="chk">Перевірити</button>`;
  }else if(l.k==6){
   h+=`<div class="q">Яке слово відповідає цій схемі?</div><div class="sch" id="sch">${draw(P(it[1]),1)}</div><div class="opts" id="g0">${cur.opts.map((x,n)=>`<button class="o" data-v="${n}">${x[0]}</button>`).join("")}</div>`;
  }else{
@@ -166,7 +201,7 @@ function show(){
   h+=tiles(w,j)+`<div class="q">Приголосний звук, який позначає «${q}», — який він?</div>
   <div class="opts" id="g0">${(l.k==3?['твердий','м’який']:['глухий','дзвінкий']).map((x,n)=>`<button class="o" data-v="${n}">${x}</button>`).join('')}</div>`;
  }
- h+=`<div id="fb"></div><button class="go" id="nx" hidden></button>`;
+ h+=`<div id="fb"></div><button class="go nx" id="nx" hidden></button>`;
  app.innerHTML=h;dots();
 
  if(l.k==1){
@@ -182,7 +217,7 @@ function show(){
     if(s&&v)b.classList.add('ok');else if(s){b.classList.add('bad');err++}else if(v){b.classList.add('miss');err++}
    });
    const ex=ix.map(j=>{const c=w[j];return c=="ь"?`м’який знак «ь» не позначає звука`:"ʼ’".includes(c)?`апостроф не позначає звука`:`«${c}» — два звуки ${TWO[c]}`}).join("; ");
-   finish(scoreErr(err),2,w,`У слові «${w}»: ${ex}. Після приголосного я, ю, є, ї дають один голосний звук і пом’якшують приголосний.`);
+   finish(scoreErr(err),2,w,`У слові «${w}»: ${ex}. ${ix.some(j=>TWO[w[j]]&&w[j]!="щ")?"Після приголосного я, ю, є, ї дають один голосний звук і пом’якшують приголосний.":""}`);
   };
  }else if(l.k==2){
   const s=it[1].split(" "),syl=s.filter(x=>VS.includes(x)).length,ans=[s.length,syl],pts=[0,0];
@@ -242,12 +277,14 @@ function show(){
 function final(){
  const pct=st.score/st.max,stars=pct>=.9?3:pct>=.7?2:pct>=.4?1:0;
  const rank=pct>=.9?'Головний детектив звуків':pct>=.7?'Старший детектив':pct>=.4?'Детектив-стажист':'Юний слідчий: спробуй ще раз!';
- const bars=L.map((l,x)=>{const r=st.res[x];return `<div class="lv"><div><span>${l.n}</span><b>${r.p} з ${r.m}</b></div><div class="bar"><b style="width:${r.m?r.p/r.m*100:0}%"></b></div></div>`}).join("");
- app.innerHTML=`<h1>Розслідування завершено!</h1>
- <p class="big">${st.score} з ${st.max}</p>
- <div class="stars">${"★".repeat(stars)+"☆".repeat(3-stars)}</div>
- <p class="rank">${rank}</p>${bars}
- ${st.wrong.length?`<div class="fb bad"><b>Ще потренуй слова:</b> ${st.wrong.join(", ")}</div>`:`<div class="fb ok"><b>Жодної помилки!</b> Усі звуки впіймано.</div>`}
+ const bars=L.map((l,x)=>{const r=st.res[x];return `<div class="lv"><div><span>${l.n}</span><b>${r.p} з ${r.m}</b></div><div class="bar2"><b style="width:${r.m?r.p/r.m*100:0}%"></b></div></div>`}).join("");
+ const star=(on)=>`<svg viewBox="0 0 24 24" class="${on?'on':''}" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8L12 17.3 5.9 20.5l1.5-6.8L2.2 9l6.9-.7z"/></svg>`;
+ window.scrollTo(0,0);
+ app.innerHTML=`<div class="tab">Справу закрито</div><h1>Розслідування завершено!</h1>
+ <div class="badge"><svg width="44" height="44" viewBox="0 0 64 64" aria-hidden="true"><circle cx="26" cy="26" r="17" fill="#fff" stroke="#161a45" stroke-width="5"/><path d="M39 39 56 56" stroke="#ffc82e" stroke-width="9" stroke-linecap="round"/><path d="M18 26h16M26 18v16" stroke="#3442d6" stroke-width="4" stroke-linecap="round"/></svg><div><small>Посвідчення детектива</small><div class="rank">${rank}</div></div></div>
+ <div class="score"><b>${st.score}</b><span>з ${st.max} балів</span></div>
+ <div class="stars" role="img" aria-label="Зірок: ${stars} з 3">${[0,1,2].map(i=>star(i<stars)).join("")}</div>${bars}
+ ${st.wrong.length?`<div class="fb bad"><span class="ic">!</span><div><b>Ще потренуй слова:</b> ${st.wrong.join(", ")}</div></div>`:`<div class="fb ok"><span class="ic">✓</span><div><b>Жодної помилки!</b> Усі звуки впіймано.</div></div>`}
  <button class="go" id="again">Нове розслідування</button>`;
  document.getElementById('again').onclick=start;
 }
